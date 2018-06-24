@@ -1,34 +1,41 @@
 <template>
   <div class="">
-     <img :src="book.volumeInfo.imageLinks.thumbnail" :alt="`${book.volumeInfo.title} cover`" class="card-img-top">
-      <div class="card-body">
-        <h3 class="card-title">{{ book.volumeInfo.title }}</h3>
-        <h4 v-for="(author, index) in book.volumeInfo.authors" :key="index" class="card-subtitle">{{ author }}</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Genres: <span v-for="(genre, index) in book.volumeInfo.categories" :key="index">{{ genre }}</span>
-          </li>
-          <li class="list-group-item">
-            Price: {{ price }}
-          </li>
-          <li class="list-group-item row" role="group">
-              <BookView :book="book"></BookView>
-              <button v-if="!onShelf" class="btn btn-success" @click="handleAdd(book)">Add</button>
-              <button v-if="onShelf" class="btn btn-danger" @click="handleDelete(book)">Delete</button>
-          </li>
-        </ul>
-      </div>
+    <img :src="book.volumeInfo.imageLinks.thumbnail" :alt="`${book.volumeInfo.title} cover`" class="card-img-top">
+    <div class="card-body">
+      <h3 class="card-title">{{ book.volumeInfo.title }}</h3>
+      <h4 v-for="(author, index) in book.volumeInfo.authors" :key="index" class="card-subtitle">{{ author }}</h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          Genres: <span v-for="(genre, index) in book.volumeInfo.categories" :key="index">{{ genre }}</span>
+        </li>
+        <li class="list-group-item">
+          Price: {{ price }}
+        </li>
+        <li class="list-group-item">
+          <StarRating :rating="book.volumeInfo.averageRating" :read-only="true" :star-size="20" :show-rating="false" :inline="true">
+          </StarRating>
+          ({{ book.volumeInfo.ratingsCount }})
+        </li>
+        <li class="list-group-item" role="group">
+            <BookView :book="book"></BookView>
+            <button v-if="!onShelf" class="btn btn-success" @click="handleAdd(book)">Add</button>
+            <button v-if="onShelf" class="btn btn-danger" @click="handleDelete(book)">Delete</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import BookView from "./BookView.vue";
+import StarRating from "vue-star-rating";
 
 export default {
     name: "BookCard",
 
     components: {
-        BookView
+        BookView,
+        StarRating
     },
 
     props: {

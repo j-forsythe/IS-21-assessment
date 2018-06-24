@@ -31,7 +31,7 @@ export default {
         return {
             newBook: {},
             loading: false,
-            bookshelve: []
+            bookshelve: bookStorage.fetch()
         };
     },
 
@@ -51,7 +51,6 @@ export default {
 
     methods: {
         fetchBookshelve() {
-            this.bookshelve = bookStorage.fetch();
             if (this.bookshelve.length > 1) return this.bookshelve;
             // Using Google Books API to retrieve a Bookshelve that I created for this assignment
             // axios was used for simplicity and its a small but powerful dependancy
@@ -79,6 +78,7 @@ export default {
         },
 
         handleAddBook(book) {
+            if (!book.length) return false;
             this.bookshelve = this.bookshelve.concat(book);
             bookStorage.save(this.bookshelve);
             return this.bookshelve;

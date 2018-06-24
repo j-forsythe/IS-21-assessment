@@ -1,11 +1,11 @@
 <template>
   <div>
     <button @click="show" type="button" class="btn btn-secondary">View</button>
-    <modal :name="book.id">
+    <modal :name="book.id" height="auto" width="90%">
       <button @click="hide" type="button" class="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <div class="row p-4 justify-content-center align-items-center">
+      <div class="book-details row p-4 justify-content-center align-items-center">
         <div class="col-12 col-md-4">
           <img :src="book.volumeInfo.imageLinks.smallThumbnail" :alt="`${book.volumeInfo.title} cover`">
         </div>
@@ -47,5 +47,10 @@ export default {
     right: 1rem;
     top: 1rem;
     z-index: 8;
+}
+
+.book-detail {
+    height: 100%;
+    overflow-y: scroll;
 }
 </style>
