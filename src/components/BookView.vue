@@ -41,7 +41,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .close {
     position: absolute;
     right: 1rem;

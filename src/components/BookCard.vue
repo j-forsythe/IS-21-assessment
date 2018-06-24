@@ -11,9 +11,10 @@
           <li class="list-group-item">
             Price: {{ price }}
           </li>
-          <li class="list-group-item btn-group" role="group">
-              <button class="btn btn-primary" @click="handleDelete(book)">Delete</button>
+          <li class="list-group-item row" role="group">
               <BookView :book="book"></BookView>
+              <button v-if="!onShelf" class="btn btn-success" @click="handleAdd(book)">Add</button>
+              <button v-if="onShelf" class="btn btn-danger" @click="handleDelete(book)">Delete</button>
           </li>
         </ul>
       </div>
@@ -22,6 +23,7 @@
 
 <script>
 import BookView from "./BookView.vue";
+
 export default {
     name: "BookCard",
 
@@ -32,6 +34,11 @@ export default {
     props: {
         book: {
             type: Object,
+            required: true
+        },
+
+        onShelf: {
+            type: Boolean,
             required: true
         }
     },
@@ -47,9 +54,13 @@ export default {
     },
 
     methods: {
-        // send which book is to be deleted to Bookshelve component
+        // send which book is to be deleted/added to Bookshelve component
         handleDelete(book) {
             this.$emit("deleteBook", book);
+        },
+
+        handleAdd(book) {
+            this.$emit("addBook", book);
         }
     }
 };
