@@ -59,14 +59,14 @@ export default {
         }
     },
 
-    mounted() {
+    created() {
         // find a local storage of books or fetch the predetermined list from Google books
+        if (this.bookshelve.length > 1) return this.bookshelve;
         this.fetchBookshelve();
     },
 
     methods: {
         fetchBookshelve() {
-            if (this.bookshelve.length > 1) return this.bookshelve;
             // Using Google Books API to retrieve a Bookshelve that I created for this assignment
             // axios was used for simplicity and its a small but powerful dependancy
             this.loading = true;
@@ -93,7 +93,7 @@ export default {
         },
 
         handleAddBook(book) {
-            if (book.length) return false;
+            if (_.isEmpty(book)) return false;
             this.bookshelve = this.bookshelve.concat(book);
             bookStorage.save(this.bookshelve);
             return this.bookshelve;
