@@ -74,6 +74,7 @@ export default {
         },
         hide() {
             this.$modal.hide("searchModal");
+            this.query = "";
         }
     }
 };

@@ -3,6 +3,11 @@
     <div class="row my-4">
       <h1 class="col-12 col-md-6">Online Catelogue</h1>
       <Search @addBook="book => newBook = book"></Search>
+      <div class="my-4 btn-group mx-auto">
+        <button @click="sortParam = 'volumeInfo.averageRating', sortDirection = 'desc'" class="btn btn-primary">Sort by Rating</button>
+        <button @click="sortParam = 'volumeInfo.title'" class="btn btn-primary">Sort by Title</button>
+        <button @click="sortParam = 'saleInfo.listPrice.amount'" class="btn btn-primary">Sort by Price</button>
+      </div>
     </div>
     <ul class="card-deck">
       <li v-if="loading">Loading...</li>
@@ -14,6 +19,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import axios from "axios";
 import Search from "./Search.vue";
 import BookCard from "./BookCard.vue";
@@ -30,7 +36,9 @@ export default {
     data() {
         return {
             newBook: {},
+            sortParam: "",
             loading: false,
+            sortDirection: "asc",
             bookshelve: bookStorage.fetch()
         };
     },
@@ -39,6 +47,13 @@ export default {
         newBook: {
             handler: function() {
                 this.handleAddBook(this.newBook);
+            },
+            immediate: true
+        },
+
+        sortParam: {
+            handler() {
+                this.handleSort();
             },
             immediate: true
         }
@@ -78,10 +93,18 @@ export default {
         },
 
         handleAddBook(book) {
-            if (!book.length) return false;
+            if (book.length) return false;
             this.bookshelve = this.bookshelve.concat(book);
             bookStorage.save(this.bookshelve);
             return this.bookshelve;
+        },
+
+        handleSort() {
+            return (this.bookshelve = _.orderBy(
+                this.bookshelve,
+                this.sortParam,
+                this.sortDirection
+            ));
         }
     }
 };

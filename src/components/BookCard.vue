@@ -14,7 +14,7 @@
         <li class="list-group-item">
           <StarRating :rating="book.volumeInfo.averageRating" :read-only="true" :star-size="20" :show-rating="false" :inline="true">
           </StarRating>
-          ({{ book.volumeInfo.ratingsCount }})
+          ({{ bookRating }})
         </li>
         <li class="list-group-item" role="group">
             <BookView :book="book"></BookView>
@@ -57,6 +57,12 @@ export default {
         price() {
             let price = this.book.saleInfo.listPrice;
             return price ? `${price.amount} ${price.currencyCode}` : "Free";
+        },
+
+        bookRating() {
+            return !this.book.volumeInfo.ratingsCount
+                ? 0
+                : this.book.volumeInfo.ratingsCount;
         }
     },
 
